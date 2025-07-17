@@ -4,12 +4,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CampoTeste {
-
+public class GeralTeste {
     private Campo campo;
+    private Tabuleiro tabuleiro;
 
     @BeforeEach
-    void iniciarCampo() {
+    void iniciarJogo() {
         campo = new Campo(3, 3);
     }
 
@@ -123,5 +123,23 @@ public class CampoTeste {
         campo.minar();
         campo.reiniciar();
         assertFalse(campo.abrir() && campo.isMarcado() && campo.isMinado());
+    }
+
+    @Test
+    void testeGerarCampo() {
+        Tabuleiro tabuleiro = new Tabuleiro(10, 10, 0);
+        int totalDeCamposEsperado = 100;
+        assertEquals(totalDeCamposEsperado, tabuleiro.getCampos().size());
+    }
+
+    @Test
+    void reinicioComSorteioDeMinas() {
+        Tabuleiro tabuleiro = new Tabuleiro(10, 10, 10);
+
+        long totalMinas = tabuleiro.getCampos().stream()
+                .filter(Campo::isMinado)
+                .count();
+
+        assertEquals(11, totalMinas); // Gera sempre uma mina a mais devido o do-while
     }
 }
